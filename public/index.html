@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineGraph — Movie Recommender</title>
+  <meta name="description" content="Discover your next favourite film through graph-powered recommendations. CineGraph uses Neo4j to connect movies, actors, and genres.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="images/vit-logo.png" alt="VIT-AP University" class="logo-img">
+    <div>
+      <div class="logo-text">CineGraph</div>
+      <div class="logo-sub">powered by Neo4j</div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Search movies, actors, genres…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <p class="hero-eyebrow">Graph-Powered Discovery</p>
+    <h1 class="hero-title">Find your next<br><em>favourite</em> film</h1>
+    <p class="hero-sub">Connections between movies, actors, and genres — explored through a graph database.</p>
+  </div>
+
+  <!-- Genre Filter -->
+  <div class="genre-bar" id="genreBar"></div>
+
+  <!-- Detail Panel -->
+  <div class="detail-panel" id="detailPanel">
+    <button class="detail-close" id="detailClose">✕</button>
+    <div class="detail-layout" id="detailLayout"></div>
+    <div class="rec-section" id="recSection"></div>
+  </div>
+
+  <!-- Cypher Query Display -->
+  <div class="neo-badge">Neo4j Cypher Query</div>
+  <div class="cypher-block" id="cypherBlock">
+    <span class="cy-keyword">MATCH</span> <span class="cy-node">(m:Movie)</span><br>
+    <span class="cy-keyword">OPTIONAL MATCH</span> <span class="cy-node">(m)</span><span class="cy-rel">-[:HAS_GENRE]-></span><span class="cy-node">(g:Genre)</span><br>
+    <span class="cy-keyword">RETURN</span> <span class="cy-prop">m.title</span>, <span class="cy-prop">m.year</span>, <span class="cy-prop">m.rating</span>, <span class="cy-prop">collect(g.name)</span> <span class="cy-keyword">AS</span> <span class="cy-val">genres</span><br>
+    <span class="cy-keyword">ORDER BY</span> <span class="cy-prop">m.rating</span> <span class="cy-keyword">DESC</span>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <span>Querying Neo4j database…</span>
+  </div>
+
+  <!-- Connection Error -->
+  <div class="connection-error" id="connectionError">
+    <div class="error-icon">⚠</div>
+    <h3>Cannot connect to Neo4j</h3>
+    <p>Make sure the server is running (<code>npm start</code>) and Neo4j credentials are configured in <code>.env</code></p>
+  </div>
+
+  <!-- Movie Grid -->
+  <div class="section-label" id="sectionLabel">All Films</div>
+  <div class="movie-grid" id="movieGrid"></div>
+
+  <!-- Graph Visualization -->
+  <div class="graph-section">
+    <div class="section-label">Graph View</div>
+    <div class="graph-canvas">
+      <canvas id="graphCanvas"></canvas>
+    </div>
+    <div class="graph-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c9a84c"></div> Movie</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#378add"></div> Actor</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1d9e75"></div> Genre</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>CineGraph — Movie Recommendation Engine</span>
+  <span>Built with Neo4j Graph Database</span>
+</footer>
+
+<script src="js/graph.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
