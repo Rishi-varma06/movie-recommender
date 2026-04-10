@@ -301,14 +301,18 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── Start Server ─────────────────────────────────────────────────────────────
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`\n  ✦ CineGraph server running at http://localhost:${PORT}\n`);
-});
+// ─── Start Server (Local only) or Export (Vercel) ───────────────────────────
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`\n  ✦ CineGraph server running at http://localhost:${PORT}\n`);
+  });
+}
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
   await driver.close();
   process.exit(0);
 });
+
+module.exports = app;
