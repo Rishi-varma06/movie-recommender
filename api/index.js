@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve the frontend
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── Neo4j Connection ─────────────────────────────────────────────────────────
 let driver;
@@ -302,7 +302,7 @@ app.get('/api/search', async (req, res) => {
 
 // ─── Fallback: serve index.html for all other routes ──────────────────────────
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 // ─── Start Server (Local only) or Export (Vercel) ───────────────────────────
